@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>Manager Test Page</title>
+</head>
+<body>
+  <h1>Manager Test Page</h1>
+
+  <h2>Register Manager</h2>
+  <form id="registerForm">
+    <input type="text" id="registerSSN" placeholder="SSN" />
+    <input type="text" id="registerName" placeholder="Name" />
+    <input type="email" id="registerEmail" placeholder="Email" />
+    <button type="submit">Register</button>
+  </form>
+
+  <h2>Login Manager</h2>
+  <form id="loginForm">
+    <input type="text" id="loginSSN" placeholder="SSN" />
+    <button type="submit">Login</button>
+  </form>
+
+  <h2>Output</h2>
+  <pre id="output"></pre>
+
+  <script>
+    const output = document.getElementById("output");
+
+    document.getElementById("registerForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const ssn = document.getElementById("registerSSN").value;
+      const name = document.getElementById("registerName").value;
+      const email = document.getElementById("registerEmail").value;
+
+      const response = await fetch("http://127.0.0.1:5000/manager/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ ssn, name, email })
+      });
+
+      const data = await response.json();
+      output.textContent = JSON.stringify(data, null, 2);
+    });
+
+    document.getElementById("loginForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const ssn = document.getElementById("loginSSN").value;
+
+      const response = await fetch("http://127.0.0.1:5000/manager/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ ssn })
+      });
+
+      const data = await response.json();
+      output.textContent = JSON.stringify(data, null, 2);
+    });
+  </script>
+</body>
+</html>
